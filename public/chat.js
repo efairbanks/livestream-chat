@@ -7,9 +7,9 @@ const username = document.getElementById('username');
 const btn = document.getElementById('send');
 const output = document.getElementById('output');
 const feedback = document.getElementById('feedback');
+const chatContainer = document.getElementById('chat-window');
 
-// emit events
-btn.addEventListener('click', () => {
+function sendMessage() {
   socket.emit('chat', {
     message: message.value,
     username: username.value,
@@ -17,14 +17,26 @@ btn.addEventListener('click', () => {
     id: new Date().getTime()
   });
   message.value = '';
+}
+
+// emit events
+btn.addEventListener('click', () => {
+  sendMessage();
 });
 
-message.addEventListener('keypress', () => {
-  socket.emit('typing', username.value);
+message.addEventListener('keypress', (e) => {
+  if(e.key == 'Enter') {
+    sendMessage();
+  } else {
+    socket.emit('typing', username.value);
+  }
 });
 
 // listen for events
-socket.on('chat', (data) => appendMessage(data));
+socket.on('chat', (data) => {
+  appendMessage(data);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+});
 
 socket.on('typing', (data) => {
   feedback.innerHTML = `<p><em>${data} is typing a message...</em></p>`;
@@ -38,6 +50,7 @@ fetch('/messages')
   const messages = await data.json();
   for (const message of messages)
     appendMessage(message);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 }) 
 
 function appendMessage(data) {

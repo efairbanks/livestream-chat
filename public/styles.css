@@ -3,20 +3,42 @@ body{
   background-color: #2C2F33;
 }
 
+#chat-window::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+#chat-window::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+#chat-window::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
 h2{
   font-size: 18px;
   padding: 10px 20px;
   color: #575ed8;
 }
 
+#player {
+  width: 80%;
+  height: 100vh;
+  display: inline-block;
+}
+
 #chat {
-  max-width: 600px;
-  margin: 30px auto;
+  width: 17%;
+  margin-left: 1%;
+  margin-top: 20px;
+  /*margin: 30px;*/
+  display: inline-block;
   border-radius: 2px;
 }
 
 #chat-window{
-  height: 70vh;
+  height: 80vh;
   overflow: auto;
   background: #2C2F33;
 
