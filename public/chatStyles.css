@@ -22,17 +22,16 @@ h2{
   color: #575ed8;
 }
 
-#player {
+#player-container{
   width: 80%;
-  height: 100vh;
+  height: 95vh;
   display: inline-block;
+  margin-top: 5px;
 }
 
 #chat {
   width: 17%;
   margin-left: 1%;
-  margin-top: 20px;
-  /*margin: 30px;*/
   display: inline-block;
   border-radius: 2px;
 }
@@ -99,4 +98,9 @@ button{
 
 a {
   color: #7289DA !important;
+}
+
+#player{
+  height: 100%;
+  width: 100%;
 }
