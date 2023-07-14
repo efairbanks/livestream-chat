@@ -6,18 +6,21 @@
 
   <link href="https://vjs.zencdn.net/7.5.5/video-js.css" rel="stylesheet">
 	<script src="https://vjs.zencdn.net/7.5.5/video.js"></script>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" defer></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/discord-theme@1.1.8/css/main.min.css" defer>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <link rel="stylesheet" href="/chatStyles.css">
   <link rel="stylesheet" href="/message.css">
 </head>
 <body>
   <div id="player-container">
-
   </div>
   <div id="chat">
+    <div id="viewer-count">
+      <i id="viewer-count-display" class="fa fa-eye"> 1 friend watching!</i>
+    </div>
     <div id="chat-window">
       <div id="output"></div>
     </div>
