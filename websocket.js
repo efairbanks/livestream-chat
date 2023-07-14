@@ -21,8 +21,11 @@ io.on('connection', (clientSocket) => {
 
     data.html = toHTML(textEmoji(data.message));
 
-    const newIndex = messages.push(data) - 1;
-    setTimeout(() => messages.splice(newIndex, 1), 5 * 60 * 1000);
+    if(messages[data.stream] == null){
+      messages[data.stream] = new Array
+    }
+    const newIndex = messages[data.stream].push(data) - 1;
+    setTimeout(() => messages[data.stream].splice(newIndex, 1), 5 * 60 * 1000);
     
     io.sockets.emit('chat', data);
   });
