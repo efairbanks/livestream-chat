@@ -28,7 +28,7 @@ fetch("/config?page=chat").then(async (data) => {
 
 function appendVideoSourceToPlayerDiv(host, streamKey) {
   playerContainer.innerHTML = `
-  <video id="player" class="video-js vjs-default-skin" controls preload="auto">
+  <video liveui=true poster="https://cacheblasters.nyc3.cdn.digitaloceanspaces.com/MovieNight.png"  id="player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto">
     <source src="${host}/hls/${streamKey}.m3u8" type="application/x-mpegURL" />
   </video>
   `;
