@@ -15,20 +15,28 @@ const output = document.getElementById("output");
 const feedback = document.getElementById("feedback");
 const chatContainer = document.getElementById("chat-window");
 const playerContainer = document.getElementById("player-container");
+let posterImages;
 
 const wasRecentlyTypingByUsername = {};
 let userCount = 1;
 
-fetch("/config?page=chat").then(async (data) => {
+await fetch("/config?page=chat").then(async (data) => {
   const config = await data.json();
+  posterImages = config.POSTER_IMAGES.split(';');
   appendVideoSourceToPlayerDiv(config.STREAM_HOST, streamKey);
   var player = videojs("#player", { autoplay: true });
   document.title = config.CHAT_TITLE ?? "Movie Lobby";
 });
 
 function appendVideoSourceToPlayerDiv(host, streamKey) {
+  let posterImage;
+  let posterCount = posterImages.length;
+  if (posterImages != null && posterCount > 0) {
+    posterImage = posterImages[Math.floor(Math.random() * posterCount)]
+  }
+
   playerContainer.innerHTML = `
-  <video liveui=true poster="https://cacheblasters.nyc3.cdn.digitaloceanspaces.com/MovieNight.png"  id="player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto">
+  <video liveui=true poster="${posterImage}"  id="player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto">
     <source src="${host}/hls/${streamKey}.m3u8" type="application/x-mpegURL" />
   </video>
   `;

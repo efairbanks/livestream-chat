@@ -14,7 +14,8 @@ const lobbyConfig = {
 };
 const chatConfig = {
   STREAM_HOST: process.env.STREAM_HOST,
-  CHAT_TITLE: process.env.CHAT_TITLE
+  CHAT_TITLE: process.env.CHAT_TITLE,
+  POSTER_IMAGES: process.env.POSTER_IMAGES
 };
 
 app.get('/messages', (req, res) => {
