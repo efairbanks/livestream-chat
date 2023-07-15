@@ -1,7 +1,6 @@
 # Livestream Chat
 Made for Discord chat clone for chatting while watching a live stream.
 
-![Preview](https://i.ibb.co/nDwFtPd/new-ws-chat.png)
 ![LobbyPreview](https://cacheblasters.nyc3.cdn.digitaloceanspaces.com/LivestreamChatPreview_Lobby.png)
 ![ChatPreview](https://cacheblasters.nyc3.cdn.digitaloceanspaces.com/LivestreamChatPreview_Chat.png)
 
