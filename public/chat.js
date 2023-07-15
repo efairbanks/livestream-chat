@@ -1,5 +1,11 @@
+const streamKey = window.location.href.slice(8).split("/")[1];
+
 // establish connection
-const socket = io.connect("/");
+const socket = io.connect("/", {
+  query: {
+    "streamKey": streamKey
+  }
+});
 
 // query DOM
 const message = document.getElementById("message");
@@ -10,7 +16,6 @@ const feedback = document.getElementById("feedback");
 const chatContainer = document.getElementById("chat-window");
 const playerContainer = document.getElementById("player-container");
 
-const streamKey = window.location.href.slice(8).split("/")[1];
 const wasRecentlyTypingByUsername = {};
 let userCount = 1;
 
@@ -92,21 +97,17 @@ socket.on("typing", (typingEvent) => {
   }
 });
 socket.on("userJoined", (count) => {
-  console.log(`Received count value of ${count}, previous was ${userCount}`);
-  userCount = count;
-  updateViewerCount(userCount);
-  console.log(`User Joined! current user count: ${userCount}`);
+  userCountChangeEvent(count, 'Joined');
 });
+
 socket.on("userLeft", (count) => {
-  console.log(`Received count value of ${count}, previous was ${userCount}`);
-  userCount = count;
-  updateViewerCount(userCount);
-  console.log(`User Left! current user count: ${userCount}`);
+  userCountChangeEvent(count, 'Left');
 });
 
 // load message history
 fetch(`/messages?streamKey=${streamKey}`).then(async (data) => {
   const messages = await data.json();
+  console.log(`Got messages maybe? ${JSON.stringify(messages)}`)
   for (const message of messages) appendMessage(message);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 });
@@ -119,4 +120,11 @@ function updateViewerCount(userCount) {
   const viewCountDisplay = document.getElementById("viewer-count-display");
   const friendString = userCount == 1 ? "friend" : "friends";
   viewCountDisplay.textContent = ` ${userCount} ${friendString} watching!`;
+}
+
+function userCountChangeEvent(count, eventType) {
+  console.log(`Received count value of ${count}, previous was ${userCount}`);
+  userCount = count;
+  updateViewerCount(userCount);
+  console.log(`User ${eventType}! current user count: ${userCount}`);
 }

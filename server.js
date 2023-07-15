@@ -3,10 +3,11 @@ const express = require('express');
 const app = express();
 const server = app.listen(3001,
   () => console.log('Server listening on port 3001'));
-  
+
 app.use(express.static('public'));
-  
-const messages = {};
+
+const messagesByStreamKey = {};
+const userCountsByStreamKey = {};
 const lobbyConfig = {
   CHAT_HOST: process.env.CHAT_HOST,
   LOBBY_TITLE: process.env.LOBBY_TITLE
@@ -16,9 +17,13 @@ const chatConfig = {
   CHAT_TITLE: process.env.CHAT_TITLE
 };
 
-app.get('/messages', (req, res) => res.json(messages[req.query.streamKey]));
-app.get('/config', (req, res) =>{
-  switch(req.query.page){
+app.get('/messages', (req, res) => {
+  let messages = messagesByStreamKey[req.query.streamKey];
+  console.log(`Sending messages to client... ${JSON.stringify(messages)}`)
+  res.json(messages);
+});
+app.get('/config', (req, res) => {
+  switch (req.query.page) {
     case 'lobby':
       res.json(lobbyConfig)
       break;
@@ -30,6 +35,7 @@ app.get('/config', (req, res) =>{
 app.use('*', (req, res) => res.sendFile(`${__dirname}/public/chat.html`))
 
 module.exports.server = server;
-module.exports.messages = messages;
+module.exports.messagesByStreamKey = messagesByStreamKey;
+module.exports.userCountsByStreamKey = userCountsByStreamKey;
 
 require('./websocket');

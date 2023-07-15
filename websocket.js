@@ -1,4 +1,4 @@
-const { messages, server } = require("./server");
+const { userCountsByStreamKey, messagesByStreamKey, server } = require("./server");
 const socket = require("socket.io");
 const got = require("got");
 const { toHTML } = require("discord-markdown");
@@ -12,24 +12,26 @@ const metascraper = require("metascraper")([
 ]);
 
 const io = socket(server);
-let userCount = 0;
 
 io.on("connection", (clientSocket) => {
-  userCount++;
+  const streamKey = clientSocket.handshake.query.streamKey;
+
+  clientSocket.join(streamKey);
+  incrementUserCount(streamKey);
+
   console.log("Made socket connection", clientSocket.id);
-  clientSocket.emit("userJoined", userCount);
-  clientSocket.broadcast.emit("userJoined", userCount);
+  io.to(streamKey).emit("userJoined", userCountsByStreamKey[streamKey]);
 
   clientSocket.on("chat", async (data) => {
     await setEmbed(data);
 
     data.html = toHTML(textEmoji(data.message));
 
-    if (messages[data.stream] == null) {
-      messages[data.stream] = new Array();
+    if (messagesByStreamKey[data.stream] == null) {
+      messagesByStreamKey[data.stream] = new Array();
     }
-    const newIndex = messages[data.stream].push(data) - 1;
-    setTimeout(() => messages[data.stream].splice(newIndex, 1), 5 * 60 * 1000);
+    const newIndex = messagesByStreamKey[data.stream].push(data) - 1;
+    setTimeout(() => messagesByStreamKey[data.stream].splice(newIndex, 1), 5 * 60 * 1000);
 
     io.sockets.emit("chat", data);
   });
@@ -39,13 +41,25 @@ io.on("connection", (clientSocket) => {
   });
 
   clientSocket.on("disconnect", () => {
-    userCount--;
-
-    if (userCount < 0) userCount = 0;
-
-    clientSocket.broadcast.emit("userLeft", userCount);
+    decrementUserCount(streamKey);
+    clientSocket.to(streamKey).broadcast.emit("userLeft", userCountsByStreamKey[streamKey]);
   });
 });
+
+function incrementUserCount(streamKey) {
+  if (userCountsByStreamKey[streamKey] == null) {
+    userCountsByStreamKey[streamKey] = 1;
+  }
+  else {
+    userCountsByStreamKey[streamKey]++;
+  }
+}
+
+function decrementUserCount(streamKey) {
+  userCountsByStreamKey[streamKey]--;
+
+  if (userCountsByStreamKey[streamKey] < 0) userCountsByStreamKey[streamKey] = 0;
+}
 
 async function setEmbed(data) {
   const containsURL = /([https://].*)/.test(data.message);
@@ -55,6 +69,6 @@ async function setEmbed(data) {
       const { body: html, url } = await got(targetUrl);
 
       data.embed = await metascraper({ html, url });
-    } catch {}
+    } catch { }
   }
 }
