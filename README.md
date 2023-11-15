@@ -5,7 +5,6 @@ Made for Discord chat clone for chatting while watching a live stream.
 ![ChatPreview](https://cacheblasters.nyc3.cdn.digitaloceanspaces.com/LivestreamChatPreview_Chat.png)
 
 
-
 [Helpful Web Socket Tutorial](https://www.youtube.com/watch?v=vQjiN8Qgs3c&list=PL4cUxeGkcC9i4V-_ZVwLmOusj8YAUhj_9)
 
 ## Docker Compose
