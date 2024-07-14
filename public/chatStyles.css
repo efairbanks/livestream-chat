@@ -1,25 +1,14 @@
-body{
-  font-family: 'Calibri Light';
-  background-color: #2C2F33;
-}
-
 #chat-window::-webkit-scrollbar {
   width: 1em;
 }
- 
+
 #chat-window::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
- 
+
 #chat-window::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
-}
-
-h2{
-  font-size: 18px;
-  padding: 10px 20px;
-  color: #575ed8;
 }
 
 #player-container{
@@ -46,16 +35,46 @@ h2{
   box-shadow: inset 0px 0px 6px 1px rgba(0,0,0,0.23);
 }
 
-#output p{
+#messages-container p{
   padding: 14px 0px;
   margin: 0 20px;
   color: #555;
 }
 
-#feedback p{
+#is-typing-container p{
   color: #aaa;
   padding: 14px 0px;
   margin: 0 20px;
+}
+
+#footer {
+  color: white;
+  text-align: center;
+}
+
+#player{
+  height: 100%;
+  width: 100%;
+}
+
+#viewer-count-display{
+  color: white
+}
+
+.at {
+  float: right;
+  color: gray;
+}
+
+h2{
+  font-size: 18px;
+  padding: 10px 20px;
+  color: #575ed8;
+}
+
+body{
+  font-family: 'Calibri Light';
+  background-color: #2C2F33;
 }
 
 label{
@@ -86,21 +105,6 @@ button{
   border-radius: 0 0 2px 2px;
 }
 
-.at {
-  float: right;
-  color: gray;
-}
-
-#footer {
-  color: white;
-  text-align: center;
-}
-
 a {
   color: #7289DA !important;
-}
-
-#player{
-  height: 100%;
-  width: 100%;
 }
